@@ -1,10 +1,9 @@
 import "react-photoswipe/lib/photoswipe.css";
 import Gallery from "../components/gallery";
 import styles from "../styles/Home.module.css";
-
+import fetch from "isomorphic-unfetch";
 
 export default function Home({ memes }) {
-  
   return (
     <div>
       <div className={styles.container}>
@@ -16,7 +15,7 @@ export default function Home({ memes }) {
   );
 }
 
-export const getServerSideProps = async () => {
+Home.getInitialProps = async () => {
   const res = await fetch("https://reddit.com/r/memes.json?limit=1000");
   const resjson = await res.json();
   const memes = resjson.data.children
@@ -33,5 +32,5 @@ export const getServerSideProps = async () => {
         title: meme.title,
       };
     });
-  return { props: { memes } };
+  return {  memes };
 };
